@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — Fernway</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest: #1c2b21;
+    --forest-deep: #142019;
+    --moss: #5c7a5a;
+    --paper: #f4efe4;
+    --paper-dim: #ece5d5;
+    --clay: #c08a2e;
+    --clay-soft: #d9ab5c;
+    --ink: #23241f;
+    --line: rgba(28,43,33,0.14);
+    --radius: 3px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    height:100%;
+  }
+
+  body{
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    display:flex;
+    min-height:100vh;
+  }
+
+  a{ color: inherit; }
+
+  /* ---------- Layout ---------- */
+
+  .stage{
+    display:flex;
+    width:100%;
+    min-height:100vh;
+  }
+
+  .side{
+    position:relative;
+    flex: 1 1 46%;
+    background: var(--forest);
+    color: var(--paper);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding: 3.2rem 3.4rem;
+    overflow:hidden;
+  }
+
+  .side::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 18% 8%, rgba(255,255,255,0.05), transparent 40%),
+      linear-gradient(180deg, var(--forest) 0%, var(--forest-deep) 100%);
+    z-index:0;
+  }
+
+  .side > *{ position:relative; z-index:1; }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    font-family:'Fraunces', serif;
+    font-size:1.28rem;
+    font-weight:500;
+    letter-spacing:0.01em;
+  }
+
+  .brand svg{ width:26px; height:26px; flex-shrink:0; }
+
+  .side-copy{
+    max-width:26rem;
+    margin: 2.5rem 0;
+  }
+
+  .side-copy h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    line-height:1.22;
+    margin: 0 0 1.1rem 0;
+    color: var(--paper);
+  }
+
+  .side-copy p{
+    font-size: 1rem;
+    line-height:1.65;
+    color: rgba(244,239,228,0.72);
+    margin:0;
+    max-width: 30ch;
+  }
+
+  .foliage{
+    width: 100%;
+    max-width: 420px;
+    height:auto;
+    opacity: 0.9;
+  }
+
+  .side-foot{
+    font-size:0.85rem;
+    color: rgba(244,239,228,0.55);
+    display:flex;
+    justify-content:space-between;
+    border-top:1px solid rgba(244,239,228,0.14);
+    padding-top:1.1rem;
+  }
+
+  /* ---------- Form side ---------- */
+
+  .form-side{
+    flex: 1 1 54%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 3rem 2.5rem;
+    background: var(--paper);
+  }
+
+  .form-wrap{
+    width:100%;
+    max-width: 380px;
+  }
+
+  .form-wrap h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:1.9rem;
+    margin: 0 0 0.4rem 0;
+    color: var(--forest-deep);
+  }
+
+  .form-wrap > p.lede{
+    margin:0 0 2.2rem 0;
+    color:#5b5c53;
+    font-size:0.98rem;
+  }
+
+  .form-wrap > p.lede a{
+    color: var(--clay);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(192,138,46,0.4);
+  }
+  .form-wrap > p.lede a:hover{ border-color: var(--clay); }
+
+  .field{
+    margin-bottom: 1.35rem;
+    position:relative;
+  }
+
+  .field label{
+    display:block;
+    font-size:0.86rem;
+    color:#4a4b43;
+    margin-bottom:0.45rem;
+  }
+
+  .field .input-shell{
+    position:relative;
+    border-bottom: 1.5px solid var(--line);
+    transition: border-color 0.18s ease;
+  }
+
+  .field .input-shell:focus-within{
+    border-color: var(--forest);
+  }
+
+  .field input{
+    width:100%;
+    border:none;
+    background:transparent;
+    outline:none;
+    font-family:'Inter', sans-serif;
+    font-size:1rem;
+    color: var(--ink);
+    padding: 0.55rem 0.1rem 0.65rem 0.1rem;
+  }
+
+  .field input::placeholder{ color:#a8a89a; }
+
+  .toggle-visibility{
+    position:absolute;
+    right:0.1rem;
+    top:50%;
+    transform: translateY(-50%);
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:#8b8c7f;
+    font-size:0.8rem;
+    font-family:'Inter', sans-serif;
+    padding:0.3rem;
+  }
+  .toggle-visibility:hover{ color: var(--forest); }
+
+  .row-between{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin: 0.2rem 0 1.9rem 0;
+    font-size:0.86rem;
+    color:#5b5c53;
+  }
+
+  .remember{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+  }
+
+  .remember input[type="checkbox"]{
+    appearance:none;
+    width:16px;
+    height:16px;
+    border:1.5px solid #b8b6a4;
+    border-radius:2px;
+    cursor:pointer;
+    position:relative;
+    flex-shrink:0;
+  }
+  .remember input[type="checkbox"]:checked{
+    background: var(--forest);
+    border-color: var(--forest);
+  }
+  .remember input[type="checkbox"]:checked::after{
+    content:"";
+    position:absolute;
+    left:4px; top:1px;
+    width:4px; height:8px;
+    border:solid var(--paper);
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+
+  .row-between a{
+    color:#5b5c53;
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+  }
+  .row-between a:hover{ color:var(--forest); border-color: var(--forest); }
+
+  .btn-primary{
+    width:100%;
+    background: var(--forest);
+    color: var(--paper);
+    border:none;
+    border-radius: var(--radius);
+    padding: 0.95rem 1rem;
+    font-family:'Inter', sans-serif;
+    font-size:1rem;
+    font-weight:500;
+    cursor:pointer;
+    transition: background 0.18s ease, transform 0.12s ease;
+    letter-spacing:0.01em;
+  }
+
+  .btn-primary:hover{ background: var(--forest-deep); }
+  .btn-primary:active{ transform: translateY(1px); }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:0.9rem;
+    margin: 1.9rem 0;
+    color:#a8a89a;
+    font-size:0.82rem;
+  }
+  .divider::before, .divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: var(--line);
+  }
+
+  .btn-secondary{
+    width:100%;
+    background: transparent;
+    border: 1.5px solid var(--line);
+    color: var(--ink);
+    border-radius: var(--radius);
+    padding: 0.85rem 1rem;
+    font-family:'Inter', sans-serif;
+    font-size:0.95rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0.6rem;
+    cursor:pointer;
+    transition: border-color 0.18s ease, background 0.18s ease;
+  }
+  .btn-secondary:hover{ border-color:#8f8f7d; background: rgba(0,0,0,0.02); }
+
+  .signup-note{
+    text-align:center;
+    margin-top:2rem;
+    font-size:0.92rem;
+    color:#5b5c53;
+  }
+  .signup-note a{
+    color: var(--clay);
+    text-decoration:none;
+    font-weight:500;
+    border-bottom:1px solid rgba(192,138,46,0.4);
+  }
+  .signup-note a:hover{ border-color: var(--clay); }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 900px){
+    .stage{ flex-direction:column; }
+    .side{
+      flex: none;
+      padding: 2.2rem 1.8rem;
+      min-height: 220px;
+    }
+    .side-copy{ margin: 1.2rem 0; }
+    .foliage{ display:none; }
+    .side-foot{ display:none; }
+    .form-side{ flex:none; padding: 2.6rem 1.6rem 3.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+
+  .visually-hidden{
+    position:absolute;
+    width:1px; height:1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+  }
+
+  input:focus-visible, button:focus-visible, a:focus-visible{
+    outline: 2px solid var(--clay);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- Botanical side -->
+  <section class="side">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 21C12 21 5 17.5 5 10.5C5 6.5 8 4 12 3C16 4 19 6.5 19 10.5C19 17.5 12 21 12 21Z" stroke="#F4EFE4" stroke-width="1.3"/>
+        <path d="M12 3V21" stroke="#F4EFE4" stroke-width="1.3"/>
+      </svg>
+      Fernway
+    </div>
+
+    <div class="side-copy">
+      <h1>Your garden,<br>remembered.</h1>
+      <p>Every watering, every new leaf, every quiet season — kept in one place so nothing gets forgotten between visits.</p>
+    </div>
+
+    <svg class="foliage" viewBox="0 0 420 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g stroke="#F4EFE4" stroke-opacity="0.55" stroke-width="1.2" fill="none">
+        <path d="M40 240C40 180 70 120 130 90C110 140 105 190 120 240" />
+        <path d="M130 90C130 90 100 100 90 130" />
+        <path d="M130 90C130 90 150 105 150 140" />
+        <path d="M60 220C60 220 90 210 105 190" />
+        <path d="M70 190C70 190 95 185 108 165" />
+      </g>
+      <g stroke="#C08A2E" stroke-opacity="0.85" stroke-width="1.4" fill="none">
+        <path d="M220 240C220 150 260 90 340 60" />
+        <ellipse cx="270" cy="130" rx="30" ry="14" transform="rotate(-35 270 130)" />
+        <ellipse cx="300" cy="95" rx="26" ry="12" transform="rotate(-30 300 95)" />
+        <ellipse cx="240" cy="175" rx="28" ry="13" transform="rotate(-40 240 175)" />
+      </g>
+      <g stroke="#F4EFE4" stroke-opacity="0.3" stroke-width="1" fill="none">
+        <path d="M340 240C340 200 355 170 390 150" />
+        <ellipse cx="365" cy="185" rx="18" ry="9" transform="rotate(-35 365 185)" />
+      </g>
+    </svg>
+
+    <div class="side-foot">
+      <span>Est. for people who forget to check the soil.</span>
+      <span>v2.4</span>
+    </div>
+  </section>
+
+  <!-- Form side -->
+  <section class="form-side">
+    <div class="form-wrap">
+      <h2>Welcome back</h2>
+      <p class="lede">New to Fernway? <a href="#">Start your garden log</a></p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="input-shell">
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-shell">
+            <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="button" class="toggle-visibility" id="toggleBtn" aria-label="Show password">Show</button>
+          </div>
+        </div>
+
+        <div class="row-between">
+          <label class="remember">
+            <input type="checkbox" name="remember">
+            Keep me signed in
+          </label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-primary">Log in</button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <button type="button" class="btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.98v2.33A9 9 0 0 0 9 18z"/>
+          <path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.98A9 9 0 0 0 0 9c0 1.45.35 2.83.98 4.03l2.97-2.33z"/>
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .98 4.97l2.97 2.33C4.66 5.17 6.65 3.58 9 3.58z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <p class="signup-note">Don't have an account? <a href="#">Create one</a></p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const toggleBtn = document.getElementById('toggleBtn');
+  const pwdInput = document.getElementById('password');
+  toggleBtn.addEventListener('click', () => {
+    const isPassword = pwdInput.type === 'password';
+    pwdInput.type = isPassword ? 'text' : 'password';
+    toggleBtn.textContent = isPassword ? 'Hide' : 'Show';
+    toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Hook up real authentication here.
+  });
+</script>
+
+</body>
+</html>
